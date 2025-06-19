@@ -13,6 +13,7 @@ public class Team {
     private String id;
     private String name;
     private Map<Team, Integer> distanceToTeam;
+    private String division;
 
     public Team() {
     }
@@ -24,6 +25,12 @@ public class Team {
     public Team(String id, String name) {
         this(id);
         this.name = name;
+    }
+
+    public Team(String id, String name, String division) {
+        this(id);
+        this.name = name;
+        this.division = division;
     }
 
     public String getId() {
@@ -58,6 +65,14 @@ public class Team {
     @Override
     public String toString() {
         return getId();
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
     }
 
     @Override
