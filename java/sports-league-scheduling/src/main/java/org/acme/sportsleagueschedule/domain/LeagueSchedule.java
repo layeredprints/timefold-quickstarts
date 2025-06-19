@@ -18,6 +18,8 @@ public class LeagueSchedule {
     private List<Round> rounds;
     @ProblemFactCollectionProperty
     private List<Team> teams;
+    @ProblemFactCollectionProperty
+    private List<Terrain> terrains;
     @PlanningEntityCollectionProperty
     private List<Match> matches;
     @PlanningScore
@@ -46,6 +48,14 @@ public class LeagueSchedule {
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+    public List<Terrain> getTerrains() {
+        return terrains;
+    }
+
+    public void setTerrains(List<Terrain> terrains) {
+        this.terrains = terrains;
     }
 
     public List<Match> getMatches() {

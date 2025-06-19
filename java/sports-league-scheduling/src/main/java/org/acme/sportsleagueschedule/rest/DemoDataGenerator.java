@@ -17,6 +17,7 @@ import org.acme.sportsleagueschedule.domain.LeagueSchedule;
 import org.acme.sportsleagueschedule.domain.Match;
 import org.acme.sportsleagueschedule.domain.Round;
 import org.acme.sportsleagueschedule.domain.Team;
+import org.acme.sportsleagueschedule.domain.Terrain;
 
 @ApplicationScoped
 public class DemoDataGenerator {
@@ -54,12 +55,15 @@ public class DemoDataGenerator {
         // Rounds
         int countRounds = 32;
         List<Round> rounds = generateRounds(countRounds);
+        // Terrains
+        List<Terrain> terrains = generateTerrains();
         // Teams
-        List<Team> teams = generateTeams();
+        List<Team> teams = generateTeams(terrains);
         // Matches
         List<Match> matches = generateMatches(teams);
         // Update schedule
         schedule.setRounds(rounds);
+        schedule.setTerrains(terrains);
         schedule.setTeams(teams);
         schedule.setMatches(matches);
         return schedule;
@@ -79,32 +83,53 @@ public class DemoDataGenerator {
         return rounds;
     }
 
-    private List<Team> generateTeams() {
-        List<Team> teams = List.of(
-                new Team("NAT1A-1", "BRAX-U14B-1", "NAT1A"),
-                new Team("NAT1A-2", "DRAG U14B-1", "NAT1A"),
-                new Team("NAT1A-3", "GANT U14B-1", "NAT1A"),
-                new Team("NAT1A-4", "LARA U14B-1", "NAT1A"),
-                new Team("NAT1A-5", "LEOP U14B-1", "NAT1A"),
-                new Team("NAT1A-6", "OREE U14B-2", "NAT1A"),
-                new Team("NAT1A-7", "RACI U14B-1", "NAT1A"),
-                new Team("NAT1A-8", "SGEO U14B-1", "NAT1A"),
-                new Team("NAT1A-9", "UCCL U14B-1", "NAT1A"),
-                new Team("NAT1A-10", "VICT U14B-1", "NAT1A"),
-                new Team("NAT1A-11", "WADU U14B-1", "NAT1A"),
+    private List<Terrain> generateTerrains() {
+        // Create 15 terrains for 23 teams, so some teams will share terrains
+        return List.of(
+                new Terrain(1L, "Stadium A"),
+                new Terrain(2L, "Stadium B"),
+                new Terrain(3L, "Stadium C"),
+                new Terrain(4L, "Stadium D"),
+                new Terrain(5L, "Stadium E"),
+                new Terrain(6L, "Stadium F"),
+                new Terrain(7L, "Stadium G"),
+                new Terrain(8L, "Stadium H"),
+                new Terrain(9L, "Stadium I"),
+                new Terrain(10L, "Stadium J"),
+                new Terrain(11L, "Stadium K"),
+                new Terrain(12L, "Stadium L"),
+                new Terrain(13L, "Stadium M"),
+                new Terrain(14L, "Stadium N"),
+                new Terrain(15L, "Stadium O")
+        );
+    }
 
-                new Team("NAT1B-1", "EMBG-U14B-1", "NAT1B"),
-                new Team("NAT1B-2", "GANT U14B-2", "NAT1B" ),
-                new Team("NAT1B-3", "HERA U14B-1", "NAT1B"),
-                new Team("NAT1B-4", "INDI U14B-1", "NAT1B"),
-                new Team("NAT1B-5", "LEOP U14B-2", "NAT1B"),
-                new Team("NAT1B-6", "LEUV U14B-1", "NAT1B"),
-                new Team("NAT1B-7", "NAMU U14B-1", "NAT1B"),
-                new Team("NAT1B-8", "OREE U14B-1", "NAT1B"),
-                new Team("NAT1B-9", "PARC U14B-1", "NAT1B"),
-                new Team("NAT1B-10", "PING U14B-1", "NAT1B"),
-                new Team("NAT1B-11", "WADU U14B-2", "NAT1B"),
-                new Team("NAT1B-12", "WHIT U14B-1", "NAT1B"));
+    private List<Team> generateTeams(List<Terrain> terrains) {
+        List<Team> teams = List.of(
+                new Team("NAT1A-1", "BRAX-U14B-1", "NAT1A", terrains.get(0)),
+                new Team("NAT1A-2", "DRAG U14B-1", "NAT1A", terrains.get(1)),
+                new Team("NAT1A-3", "GANT U14B-1", "NAT1A", terrains.get(2)),
+                new Team("NAT1A-4", "LARA U14B-1", "NAT1A", terrains.get(3)),
+                new Team("NAT1A-5", "LEOP U14B-1", "NAT1A", terrains.get(4)),
+                new Team("NAT1A-6", "OREE U14B-2", "NAT1A", terrains.get(5)),
+                new Team("NAT1A-7", "RACI U14B-1", "NAT1A", terrains.get(6)),
+                new Team("NAT1A-8", "SGEO U14B-1", "NAT1A", terrains.get(7)),
+                new Team("NAT1A-9", "UCCL U14B-1", "NAT1A", terrains.get(8)),
+                new Team("NAT1A-10", "VICT U14B-1", "NAT1A", terrains.get(9)),
+                new Team("NAT1A-11", "WADU U14B-1", "NAT1A", terrains.get(10)),
+
+                new Team("NAT1B-1", "EMBG-U14B-1", "NAT1B", terrains.get(11)),
+                new Team("NAT1B-2", "GANT U14B-2", "NAT1B", terrains.get(2)),  // Shares with NAT1A-3
+                new Team("NAT1B-3", "HERA U14B-1", "NAT1B", terrains.get(12)),
+                new Team("NAT1B-4", "INDI U14B-1", "NAT1B", terrains.get(13)),
+                new Team("NAT1B-5", "LEOP U14B-2", "NAT1B", terrains.get(4)),  // Shares with NAT1A-5
+                new Team("NAT1B-6", "LEUV U14B-1", "NAT1B", terrains.get(14)),
+                new Team("NAT1B-7", "NAMU U14B-1", "NAT1B", terrains.get(0)),  // Shares with NAT1A-1
+                new Team("NAT1B-8", "OREE U14B-1", "NAT1B", terrains.get(5)),  // Shares with NAT1A-6
+                new Team("NAT1B-9", "PARC U14B-1", "NAT1B", terrains.get(8)),  // Shares with NAT1A-9
+                new Team("NAT1B-10", "PING U14B-1", "NAT1B", terrains.get(10)), // Shares with NAT1A-11
+                new Team("NAT1B-11", "WADU U14B-2", "NAT1B", terrains.get(10)), // Also shares with NAT1A-11
+                new Team("NAT1B-12", "WHIT U14B-1", "NAT1B", terrains.get(1))); // Shares with NAT1A-2
 
        // Distances
         for (int i = 0; i < teams.size(); i++) {

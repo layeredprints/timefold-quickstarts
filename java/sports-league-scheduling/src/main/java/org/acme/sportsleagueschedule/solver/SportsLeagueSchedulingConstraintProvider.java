@@ -24,6 +24,7 @@ public class SportsLeagueSchedulingConstraintProvider implements ConstraintProvi
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[] {
                 matchesOnSameDay(constraintFactory),
+                terrainConflict(constraintFactory),
                 multipleConsecutiveHomeMatches(constraintFactory),
                 multipleConsecutiveAwayMatches(constraintFactory),
                 repeatMatchOnTheNextDay(constraintFactory),
@@ -46,6 +47,15 @@ public class SportsLeagueSchedulingConstraintProvider implements ConstraintProvi
                                 || match1.getAwayTeam().equals(match2.getAwayTeam())))
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Matches on the same day");
+    }
+
+    protected Constraint terrainConflict(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEachUniquePair(Match.class,
+                        equal(Match::getRoundIndex),
+                        equal(match -> match.getHomeTeam().getTerrain()))
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("Terrain conflict");
     }
 
     protected Constraint multipleConsecutiveHomeMatches(ConstraintFactory constraintFactory) {
